@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".WaitTimeFeedActivity">
+
+    <TextView
+        android:id="@+id/airport_name_label"
+        android:layout_width="121dp"
+        android:layout_height="38dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="120dp"
+        android:layout_marginEnd="230dp"
+        android:layout_marginRight="230dp"
+        android:text="Airport:"
+        android:textSize="22dp" />
+
+    <TextView
+        android:id="@+id/airport_name"
+        android:layout_width="200px"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/airport_name_label"
+        android:layout_alignBottom="@+id/navigation"
+        android:layout_marginLeft="154dp"
+        android:layout_marginBottom="-101dp"
+        android:text="SFO"
+        android:textSize="22dp"
+        app:fontFamily="cursive" />
+
+    <TextView
+        android:id="@+id/terminal_label"
+        android:layout_width="121dp"
+        android:layout_height="41dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="182dp"
+        android:layout_marginRight="233dp"
+        android:text="Terminal:"
+        android:textSize="22dp" />
+
+    <TextView
+        android:id="@+id/terminal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="215dp"
+        android:layout_marginLeft="215dp"
+        android:layout_marginTop="187dp"
+        android:text="Terminal O"
+        android:textSize="22dp"
+        app:fontFamily="cursive" />
+
+
+
+    <TextView
+        android:id="@+id/no_of_active_queues_label"
+        android:layout_width="125dp"
+        android:layout_height="60dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="41dp"
+        android:layout_marginLeft="41dp"
+        android:layout_marginTop="250dp"
+        android:text="No of active queues:"
+        android:textSize="22dp" />
+
+    <EditText
+        android:id="@+id/no_of_active_queues"
+        android:layout_width="175dp"
+        android:layout_height="42dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginBottom="293dp"
+        android:ems="10"
+        android:inputType="number"
+        android:textSize="22dp"
+        app:fontFamily="cursive" />
+
+    <TextView
+        android:id="@+id/no_of_people_before_label"
+        android:layout_width="129dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="42dp"
+        android:layout_marginLeft="42dp"
+        android:layout_marginTop="320dp"
+        android:text="No of people before:"
+        android:textSize="22dp" />
+
+    <EditText
+        android:id="@+id/no_of_people_before"
+        android:layout_width="174dp"
+        android:layout_height="37dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="254dp"
+        android:layout_marginEnd="41dp"
+        android:layout_marginRight="41dp"
+        android:ems="10"
+        android:inputType="number"
+        android:textSize="22dp"
+        app:fontFamily="cursive" />
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/navigation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
+        android:background="?android:attr/windowBackground"
+        android:textSize="22dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:menu="@menu/navigation" />
+
+    <Button
+        android:id="@+id/btn_submit"
+        android:layout_width="133dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginBottom="206dp"
+        android:text="Submit"
+        app:fontFamily="cursive"
+        android:textSize="22dp"
+         />
+
+
+</RelativeLayout>

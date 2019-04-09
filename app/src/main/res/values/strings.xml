@@ -20,4 +20,8 @@
     <string name="shr_bottoms_label">Bottoms</string>
     <string name="shr_dresses_label">Dresses</string>
     <string name="shr_account_label">My Account</string>
+    <string name="title_activity_wait_time_feed">WaitTimeFeedActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 </resources>
