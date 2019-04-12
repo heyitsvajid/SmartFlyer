@@ -16,9 +16,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONArray;
+
 
 import java.util.HashMap;
 
@@ -68,8 +69,9 @@ public class WaitTimeFeedActivity extends AppCompatActivity {
     public void feedData(View v){
         System.out.println("Method CALLED!!!");
         final RequestQueue queue = Volley.newRequestQueue(this);
-        final String url = "http://localhost:3000/wait-times/insert"; // your URL
-
+        final String url = "http://172.18.38.97:3000/wait-times/insert"; // your URL
+        //172.18.38.97
+        //IP Address	172.18.38.97, fe80::59d3:261a:dcd7:96b1
         queue.start();
 
                 HashMap<String, String> params = new HashMap<String,String>();
