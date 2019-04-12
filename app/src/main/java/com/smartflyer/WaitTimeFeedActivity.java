@@ -1,5 +1,6 @@
 package com.smartflyer;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -30,6 +31,8 @@ public class WaitTimeFeedActivity extends AppCompatActivity {
     TextView terminal;
     EditText noOfPeople;
     EditText noOfActiveQueues;
+    static WaitTimeFeedActivity context;
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -55,6 +58,7 @@ public class WaitTimeFeedActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = this;
         setContentView(R.layout.activity_wait_time_feed);
 
          airportName = (TextView)findViewById(R.id.airport_name);
@@ -88,14 +92,18 @@ public class WaitTimeFeedActivity extends AppCompatActivity {
                             @Override
                             public void onResponse(JSONObject response) {
                                 try {
-                                    Toast.makeText(WaitTimeFeedActivity.this,response.getString("message"),Toast.LENGTH_SHORT);
+                                    System.out.println("WORKING!!");
+                                    System.out.println(response.get("message"));
+                                    Toast.makeText(context.getApplicationContext(),response.get("message").toString(),Toast.LENGTH_LONG).show();
                                 } catch (JSONException e) {
+                                    System.out.println("Inner NOT WORKING!!" + e.getMessage());
                                     e.printStackTrace();
                                 }
                             }
                         }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        System.out.println("Outer NOT WORKING!!"+ error.getMessage());
                         Toast.makeText(WaitTimeFeedActivity.this,error.getMessage().toString(),Toast.LENGTH_SHORT);
                     }
                 });
