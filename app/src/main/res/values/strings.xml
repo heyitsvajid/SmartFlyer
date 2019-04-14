@@ -3,7 +3,7 @@
     <string name="shr_app_name">Smart Flyer</string>
     <string name="shr_hint_username">Username</string>
     <string name="shr_hint_password">Password</string>
-    <string name="shr_button_next">Next</string>
+    <string name="shr_button_next">Continue as Guest</string>
     <string name="shr_button_cancel">Cancel</string>
     <string name="shr_error_password">Password must contain at least 8 characters.</string>
     <string name="shr_filter_title">Filter</string>
@@ -24,4 +24,8 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_search_airport">SearchAirport</string>
+
+    <!-- Google Sign In -->
+    <string name="server_client_id">538454092955-0u2cqf9g4gon28r5pfnmr76gg0alm754.apps.googleusercontent.com</string>
+
 </resources>
