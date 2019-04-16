@@ -14,9 +14,10 @@
         android:layout_marginRight="10dp"
         android:layout_marginLeft = "10dp"
         android:elevation="10dp"
-        android:id="@+id/relLayout1"
         android:background="#fff"
+        android:id="@+id/relative1"
         >
+
         <ImageView
             android:layout_width="15dp"
             android:layout_height="15dp"
@@ -27,29 +28,38 @@
             tools:context="com.smartflyer.SearchAirport"
             />
 
-        <EditText
+    <EditText
             android:id="@+id/input_search"
-            android:layout_width="370dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="-3dp"
+            android:layout_width="match_parent"
+            android:textColor="@android:color/black"
+            android:textColorHint="@android:color/black"
             android:layout_toRightOf="@+id/ic_magnify"
-            android:background="@null"
             android:hint="Search Airport"
-            android:imeOptions="actionSearch"
-            android:padding="10dp"
-            android:textColor="#000"
-            android:textSize="15sp" />
+            android:text="sfo"
+            android:inputType="text"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/button"
+        />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:text="Search"
+            android:onClick="onSearch"/>
+
 
     </RelativeLayout>
-
-    <EditText
-        android:id="@+id/latitude_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="70dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name" />
+    <!-- A RecyclerView with some commonly used attributes -->
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:scrollbars="vertical"
+        android:layout_below="@id/relative1"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </RelativeLayout>
