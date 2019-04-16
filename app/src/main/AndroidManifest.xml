@@ -31,9 +31,11 @@
         <activity
             android:name=".WaitTimeFeedActivity"
             android:label="@string/title_activity_wait_time_feed"></activity>
+
         <activity
             android:name=".SearchAirport"
             android:label="@string/title_activity_search_airport"></activity>
+
         <activity
             android:name=".DetailActivity"
             android:label="@string/title_activity_search_airport"></activity>
@@ -41,7 +43,6 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

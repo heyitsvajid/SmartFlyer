@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
     private SignInButton googleSignInButton;
     private GoogleSignInClient googleSignInClient;
-
+    private SQLiteHandler sqLiteHandler;
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
 
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        sqLiteHandler = new SQLiteHandler(this);
         googleSignInButton = findViewById(R.id.sign_in_button);
         _emailText = findViewById(R.id.input_email);
         _passwordText = findViewById(R.id.input_password);
@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent, REQUEST_SIGNUP);
             }
         });
+
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -83,15 +84,17 @@ public class MainActivity extends AppCompatActivity {
         // Build a GoogleSignInClient with the options specified by gso.
         googleSignInClient = GoogleSignIn.getClient(this, gso);
 
+        //check user login state
+        HashMap<String,String> user = sqLiteHandler.getLoggedInUser();
+
         //Check if already signed in
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         if (account != null) {
-            Log.w("getLastSignedInAccount", account.toString());
-//            Intent intent = new Intent(MainActivity.this, SearchAirport.class);
-//            //Pass Data Here like name
-//            intent.putExtra("GOOGLE_ACCOUNT", account);
-//            startActivity(intent);
-//            finish();
+            Log.w("PreviousGoogleLogin", account.toString());
+            onLoginSuccess(account.getDisplayName(), account.getEmail());
+        } else if(user!=null){
+            Log.w("PreviousCustumlogin", user.toString());
+            onLoginSuccess(user.get("name"),user.get("email"));
         }
 
         googleSignInButton.setOnClickListener(new View.OnClickListener() {
@@ -101,6 +104,9 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(signInIntent, 101);
             }
         });
+
+
+
     }
 
     public void skipLogin(View v) {
@@ -131,9 +137,7 @@ public class MainActivity extends AppCompatActivity {
     private void handleSignInResult(GoogleSignInAccount account) {
         try {
             // Signed in successfully, show authenticated UI.
-            Intent intent = new Intent(MainActivity.this, SearchAirport.class);
-            intent.putExtra("GOOGLE_ACCOUNT", account);
-            startActivity(intent);
+            onLoginSuccess(account.getGivenName(),account.getEmail());
             finish();
         } catch (Exception e) {
             // The ApiException status code indicates the detailed failure reason.
@@ -182,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
                                     public void onResponse(JSONObject response) {
                                         try {
                                             System.out.println(response.get("name"));
-                                            onLoginSuccess(response);
+                                            onLoginSuccess(response.getString("name"),response.getString("email"));
                                         } catch (JSONException e) {
                                             System.out.println("Inner NOT WORKING!!" + e.getMessage());
                                             onLoginFailed();
@@ -202,13 +206,12 @@ public class MainActivity extends AppCompatActivity {
                 }, 3000);
     }
 
-    public void onLoginSuccess(JSONObject user) throws JSONException {
+    public void onLoginSuccess(String name, String email) {
         _loginButton.setEnabled(true);
         // Signed in successfully, show authenticated UI.
+        sqLiteHandler.loginUser(name,email);
         Intent intent = new Intent(MainActivity.this, SearchAirport.class);
-        intent.putExtra("ACCOUNT", "");
         startActivity(intent);
-        Toast.makeText(getBaseContext(), "Hello " + user.getString("name"), Toast.LENGTH_LONG).show();
     }
 
     public void onLoginFailed() {
