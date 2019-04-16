@@ -73,7 +73,7 @@ public class WaitTimeFeedActivity extends AppCompatActivity {
     public void feedData(View v){
         System.out.println("Method CALLED!!!");
         final RequestQueue queue = Volley.newRequestQueue(this);
-        final String url = "http://172.18.38.97:3000/wait-times/insert"; // your URL
+        final String url = Config.BACKEND_URL + "wait-times/insert"; // your URL
         //172.18.38.97
         //IP Address	172.18.38.97, fe80::59d3:261a:dcd7:96b1
         queue.start();
