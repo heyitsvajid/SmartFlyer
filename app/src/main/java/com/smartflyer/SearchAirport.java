@@ -2,6 +2,7 @@ package com.smartflyer;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -62,15 +63,28 @@ public class SearchAirport extends Activity {
     private Boolean mLocationPermissionsGranted = false;
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COURSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
+    private SQLiteHandler sqLiteHandler;
 
     private RecyclerView mRecyclerView;
-    private ArrayList<Airport> mSportsData;
+    private ArrayList<Airport> mAirportsData;
     private AirportsAdapter mAdapter;
     private EditText edit_txt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_airport);
+        sqLiteHandler = new SQLiteHandler(this);
+
+        //check user login state
+        HashMap<String,String> user = sqLiteHandler.getLoggedInUser();
+        if(user!=null){
+            Toast.makeText(getBaseContext(), "Hello " + user.get("name"), Toast.LENGTH_LONG).show();
+        }else{
+            Intent intent = new Intent(SearchAirport.this, MainActivity.class);
+            startActivity(intent);
+            Toast.makeText(getBaseContext(), "Login to continue", Toast.LENGTH_LONG).show();
+            finish();
+        }
 
         // Initialize the RecyclerView.
         mRecyclerView = findViewById(R.id.recyclerView);
@@ -79,10 +93,10 @@ public class SearchAirport extends Activity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Initialize the ArrayList that will contain the data.
-        mSportsData = new ArrayList<>();
+        mAirportsData = new ArrayList<>();
 
         // Initialize the adapter and set it to the RecyclerView.
-        mAdapter = new AirportsAdapter(this, mSportsData);
+        mAdapter = new AirportsAdapter(this, mAirportsData);
         mRecyclerView.setAdapter(mAdapter);
 
         // Get the location.
@@ -227,7 +241,7 @@ public class SearchAirport extends Activity {
      * Initialize the sports data from resources.
      */
     private void setData(JSONArray arr) {
-        mSportsData.clear();
+        mAirportsData.clear();
         try {
             for (int i = 0; i < arr.length(); i++) {
                 System.out.println(arr.get(i));
@@ -235,7 +249,7 @@ public class SearchAirport extends Activity {
                 Airport a = new Airport(o.getString("_id"),o.getString("name"),
                         o.getString("city"),o.getString("country"),o.getString("iata"),
                         o.getString("latitude"),o.getString("longitude"));
-                mSportsData.add(a);
+                mAirportsData.add(a);
             }
         } catch (JSONException e) {
             e.printStackTrace();
