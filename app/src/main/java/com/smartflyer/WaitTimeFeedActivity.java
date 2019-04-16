@@ -74,8 +74,7 @@ public class WaitTimeFeedActivity extends AppCompatActivity {
         System.out.println("Method CALLED!!!");
         final RequestQueue queue = Volley.newRequestQueue(this);
         final String url = Config.BACKEND_URL + "wait-times/insert"; // your URL
-        //172.18.38.97
-        //IP Address	172.18.38.97, fe80::59d3:261a:dcd7:96b1
+        //IP Address (Zenobia)	172.18.38.97
         queue.start();
 
                 HashMap<String, String> params = new HashMap<String,String>();
