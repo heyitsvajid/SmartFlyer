@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -81,6 +84,52 @@ public class DetailActivity extends AppCompatActivity {
                         HashMap<String,String> user = sqLiteHandler.getLoggedInUser();
                         sqLiteHandler.logoutUser(user.get("email"));
                         Intent intent = new Intent(DetailActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        Toast.makeText(getBaseContext(), "Login to continue", Toast.LENGTH_LONG).show();
+                        finish();
+                    }
+                });
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu_actions, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        // Handle action bar actions click
+        switch (item.getItemId()) {
+            case R.id.rate_app:
+                Toast.makeText(this, "Future feature", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.action_logout:
+                logout();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+    public void logout(){
+        GoogleSignInClient mGoogleSignInClient;
+        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        // Build a GoogleSignInClient with the options specified by gso.
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        Toast.makeText(getBaseContext(), "Logout Called", Toast.LENGTH_LONG).show();
+        mGoogleSignInClient.signOut()
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        HashMap<String,String> user = sqLiteHandler.getLoggedInUser();
+                        sqLiteHandler.logoutUser(user.get("email"));
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         startActivity(intent);
                         Toast.makeText(getBaseContext(), "Login to continue", Toast.LENGTH_LONG).show();
                         finish();
