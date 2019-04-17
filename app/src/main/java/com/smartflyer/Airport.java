@@ -16,8 +16,9 @@ public class Airport {
     private String longitude;
     private String[] waitTimes;
     private String image;
+    private String averageWaitTime;
 
-    public Airport(String _id,String name, String city, String country, String iata, String latitude, String longitude, String image) {
+    public Airport(String _id,String name, String city, String country, String iata, String latitude, String longitude, String image, String averageWaitTime) {
         this._id = _id;
         this.name = name;
         this.city = city;
@@ -26,6 +27,7 @@ public class Airport {
         this.latitude = latitude;
         this.longitude = longitude;
         this.image = image;
+        this.averageWaitTime = averageWaitTime;
     }
 
     public String getImage() {
@@ -99,4 +101,11 @@ public class Airport {
     public void setWaitTimes(String[] waitTimes) {
         this.waitTimes = waitTimes;
     }
+
+    public String getAverageWaitTime() {
+        return averageWaitTime;
+    }
+
+    public void setAverageWaitTime(String averageWaitTime) { this.averageWaitTime = averageWaitTime; }
+
 }

@@ -141,6 +141,8 @@ public class AirportsAdapter extends RecyclerView.Adapter<AirportsAdapter.ViewHo
             detailIntent.putExtra("country", currentAirport.getCountry());
             detailIntent.putExtra("iata", currentAirport.getIata());
             detailIntent.putExtra("image", currentAirport.getImage());
+            System.out.print(currentAirport.getAverageWaitTime());
+            detailIntent.putExtra("averageWaitTime", currentAirport.getAverageWaitTime());
             mContext.startActivity(detailIntent);
         }
     }

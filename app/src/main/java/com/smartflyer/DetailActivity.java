@@ -90,13 +90,16 @@ public class DetailActivity extends AppCompatActivity {
         TextView iata = findViewById(R.id.iata);
         TextView name = findViewById(R.id.name);
         TextView address = findViewById(R.id.address);
+        TextView averageWaitTime = findViewById(R.id.averageWaitTime);
         ImageView mAirportImage = findViewById(R.id.airportImage);
+
 
         // Set the text from the Intent extra.
 
         iata.setText(getIntent().getStringExtra("iata"));
         name.setText(getIntent().getStringExtra("name"));
         address.setText(getIntent().getStringExtra("city") + ", " + getIntent().getStringExtra("country"));
+        averageWaitTime.setText("Average wait time is : " + getIntent().getStringExtra("averageWaitTime"));
 
         // Load the image using the Glide library and the Intent extra.
         Glide.with(this)

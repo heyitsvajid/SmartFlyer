@@ -256,7 +256,7 @@ public class SearchAirport extends AppCompatActivity {
                 JSONObject o = (JSONObject)arr.get(i);
                 Airport a = new Airport(o.getString("_id"),o.getString("name"),
                         o.getString("city"),o.getString("country"),o.getString("iata"),
-                        o.getString("latitude"),o.getString("longitude"), o.getString("image"));
+                        o.getString("latitude"),o.getString("longitude"), o.getString("image"), o.getString("averageWaitTime"));
                 mAirportsData.add(a);
             }
         } catch (JSONException e) {

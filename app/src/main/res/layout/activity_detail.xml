@@ -54,11 +54,22 @@
             android:text="Address"
             android:textColor="?android:textColorSecondary" />
 
+        <TextView
+            android:id="@+id/averageWaitTime"
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/address"
+            android:padding="16dp"
+            android:text="averageWaitTime"
+            android:textColor="?android:textColorSecondary" />
+
+
         <View
             android:id="@+id/hr1"
             android:layout_width="fill_parent"
             android:layout_height="1dip"
-            android:layout_below="@id/address"
+            android:layout_below="@id/averageWaitTime"
             android:background="#000000" />
 
         <TextView
