@@ -75,7 +75,6 @@ public class AirportsAdapter extends RecyclerView.Adapter<AirportsAdapter.ViewHo
         return mAirportsData.size();
     }
 
-
     /**
      * ViewHolder class that represents each row of data in the RecyclerView.
      */
@@ -112,7 +111,7 @@ public class AirportsAdapter extends RecyclerView.Adapter<AirportsAdapter.ViewHo
             address.setText(currentAirport.getCity() + ", " + currentAirport.getCountry());
             // Load the images into the ImageView using the Glide library.
             Glide.with(mContext)
-                    .load("https://d13k13wj6adfdf.cloudfront.net/urban_areas/San_Francisco_9q8yy-68f5c7173b.jpg") // image url
+                    .load(currentAirport.getImage()) // image url
                     .placeholder(R.drawable.app_logo) // any placeholder to load at start
                     .error(R.drawable.app_logo)  // any image in case of error
                     .override(200, 200) // resizing
@@ -134,6 +133,7 @@ public class AirportsAdapter extends RecyclerView.Adapter<AirportsAdapter.ViewHo
             detailIntent.putExtra("city", currentAirport.getCity());
             detailIntent.putExtra("country", currentAirport.getCountry());
             detailIntent.putExtra("iata", currentAirport.getIata());
+            detailIntent.putExtra("image", currentAirport.getImage());
             mContext.startActivity(detailIntent);
         }
     }

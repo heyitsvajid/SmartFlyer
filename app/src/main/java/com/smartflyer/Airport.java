@@ -15,9 +15,9 @@ public class Airport {
     private String latitude;
     private String longitude;
     private String[] waitTimes;
-    private int imageResource;
+    private String image;
 
-    public Airport(String _id,String name, String city, String country, String iata, String latitude, String longitude) {
+    public Airport(String _id,String name, String city, String country, String iata, String latitude, String longitude, String image) {
         this._id = _id;
         this.name = name;
         this.city = city;
@@ -25,6 +25,15 @@ public class Airport {
         this.iata = iata;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.image = image;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public String get_id() {
@@ -33,10 +42,6 @@ public class Airport {
 
     public void set_id(String _id) {
         this._id = _id;
-    }
-
-    public void setImageResource(int imageResource) {
-        this.imageResource = imageResource;
     }
 
     public String getName() {
@@ -93,9 +98,5 @@ public class Airport {
 
     public void setWaitTimes(String[] waitTimes) {
         this.waitTimes = waitTimes;
-    }
-
-    public int getImageResource() {
-        return imageResource;
     }
 }

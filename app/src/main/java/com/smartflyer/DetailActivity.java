@@ -99,10 +99,8 @@ public class DetailActivity extends AppCompatActivity {
         address.setText(getIntent().getStringExtra("city") + ", " + getIntent().getStringExtra("country"));
 
         // Load the image using the Glide library and the Intent extra.
-//        Glide.with(this).load(getIntent().getIntExtra("image_resource",0))
-//                .into(sportsImage);
         Glide.with(this)
-                .load("https://d13k13wj6adfdf.cloudfront.net/urban_areas/San_Francisco_9q8yy-68f5c7173b.jpg") // image url
+                .load(getIntent().getStringExtra("image")) // image url
                 .placeholder(R.drawable.app_logo) // any placeholder to load at start
                 .error(R.drawable.app_logo)  // any image in case of error
                 .override(200, 200) // resizing
