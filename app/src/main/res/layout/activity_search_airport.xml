@@ -14,42 +14,47 @@
         android:layout_marginRight="10dp"
         android:layout_marginLeft = "10dp"
         android:elevation="10dp"
-        android:background="#fff"
+        android:background = "@drawable/white_border"
         android:id="@+id/relative1"
         >
 
         <ImageView
-            android:layout_width="15dp"
-            android:layout_height="15dp"
             android:id="@+id/ic_magnify"
-            android:layout_centerVertical = "true"
-            android:layout_marginLeft = "10dp"
-            android:src = "@drawable/ic_magnify"
-            tools:context="com.smartflyer.SearchAirport"
-            />
+            android:layout_width="38dp"
+            android:layout_height="37dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
+            android:onClick="onSearch"
+            app:srcCompat="@drawable/ic_magnify"
+            tools:context="com.smartflyer.SearchAirport" />
 
     <EditText
             android:id="@+id/input_search"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:textColor="@android:color/black"
             android:textColorHint="@android:color/black"
-            android:layout_toRightOf="@+id/ic_magnify"
+            android:layout_toLeftOf="@+id/ic_magnify"
             android:hint="Search Airport"
-            android:text="sfo"
             android:inputType="text"
-            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
             android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@+id/button"
-        />
 
-        <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:text="Search"
-            android:onClick="onSearch"/>
+        />
+        <!--android:layout_toLeftOf="@+id/button"-->
+
+        <!--<Button-->
+            <!--android:id="@+id/button"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_marginRight="6dp"-->
+            <!--android:text="Search"-->
+            <!--android:onClick="onSearch"/>-->
 
 
     </RelativeLayout>
