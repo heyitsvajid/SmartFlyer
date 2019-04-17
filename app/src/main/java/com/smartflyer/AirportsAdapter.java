@@ -6,12 +6,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /***
  * The adapter class for the RecyclerView, contains the airports data.
@@ -86,6 +88,7 @@ public class AirportsAdapter extends RecyclerView.Adapter<AirportsAdapter.ViewHo
         private TextView name;
         private ImageView mAirportImage;
         private TextView address;
+        private ImageView openMapButton;
         /**
          * Constructor for the ViewHolder, used in onCreateViewHolder().
          *
@@ -99,7 +102,7 @@ public class AirportsAdapter extends RecyclerView.Adapter<AirportsAdapter.ViewHo
             name= itemView.findViewById(R.id.name);
             address = itemView.findViewById(R.id.address);
             mAirportImage = itemView.findViewById(R.id.airportImage);
-
+            openMapButton = itemView.findViewById(R.id.mapButton);
             // Set the OnClickListener to the entire view.
             itemView.setOnClickListener(this);
         }
@@ -109,6 +112,10 @@ public class AirportsAdapter extends RecyclerView.Adapter<AirportsAdapter.ViewHo
             name.setText(currentAirport.getName());
             icao.setText(currentAirport.getIata());
             address.setText(currentAirport.getCity() + ", " + currentAirport.getCountry());
+            HashMap<String,String> latLng = new HashMap<>();
+            latLng.put("lat",currentAirport.getLatitude());
+            latLng.put("lng",currentAirport.getLongitude());
+            openMapButton.setTag(latLng);
             // Load the images into the ImageView using the Glide library.
             Glide.with(mContext)
                     .load(currentAirport.getImage()) // image url

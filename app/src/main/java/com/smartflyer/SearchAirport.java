@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
 import android.support.annotation.NonNull;
@@ -307,5 +308,22 @@ public class SearchAirport extends AppCompatActivity {
                         finish();
                     }
                 });
+    }
+
+    public void showInMap(View v){
+        HashMap<String,String> latLng = (HashMap)v.getTag();
+        System.out.println(latLng.get("lat"));
+        String lat = latLng.get("lat");
+        String lng = latLng.get("lng");
+        Uri gmmIntentUri = Uri.parse("geo:"+lat+","+lng);
+        //Uri gmmIntentUri = Uri.parse("google.streetview:cbll="+lat+","+lng);
+        //google.streetview:cbll=46.414382,10.013988
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        mapIntent.setPackage("com.google.android.apps.maps");
+        if (mapIntent.resolveActivity(getPackageManager()) != null) {
+            startActivity(mapIntent);
+        } else {
+            Toast.makeText(this,"You do not have a suitable application",Toast.LENGTH_LONG);
+        }
     }
 }
