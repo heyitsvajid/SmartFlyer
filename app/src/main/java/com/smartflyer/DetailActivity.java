@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 /***
  * Detail Activity that is launched when a list item is clicked.
@@ -273,27 +274,29 @@ public class DetailActivity extends AppCompatActivity {
                                         try {
                                             JSONArray waitTimes = (JSONArray) response.get("waittimes");
                                             System.out.println(waitTimes);
-                                            List<String> date = new ArrayList<>();
                                             List<String> wait = new ArrayList<>();
 
                                             for(int i = 0; i<waitTimes.length() ; i++){
                                                 JSONObject current = (JSONObject)waitTimes.get(i);
-                                                String tdate = current.getString("created");
+                                                String waitString = current.getString("created");
                                                 try{
                                                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-//                                                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-                                                    Date pubDate = sdf.parse(tdate);
-                                                    tdate = new String(pubDate.toString());
+                                                    Date pubDate = sdf.parse(waitString);
+                                                    SimpleDateFormat dateString = new SimpleDateFormat("MM-dd-yyyy");
+                                                    SimpleDateFormat timeString = new SimpleDateFormat("HH:mm:ss");
+
+                                                    waitString = "Waited " +
+                                                            current.getString("wait") + " mins" +
+                                                            " on " + new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(pubDate) +
+                                                            " at " + new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(pubDate);
+
+                                                //pubDate.get   new String(pubDate.toString());
                                                 }catch (Exception e){
                                                     e.printStackTrace();
                                                 }
-
-                                                date.add(tdate);
-                                                wait.add(current.getString("wait") + " minutes");
+                                                wait.add(waitString);
                                             }
-                                            System.out.println(date);
-                                            System.out.println(wait);
-                                            setListViewItems(date,wait);
+                                            setListViewItems(wait);
                                         } catch (JSONException e) {
                                             System.out.println("Inner NOT WORKING!!" + e.getMessage());
                                             e.printStackTrace();
@@ -311,12 +314,12 @@ public class DetailActivity extends AppCompatActivity {
 
     }
 
-    public void setListViewItems(List<String> date, List<String> wait){
-        if(date.isEmpty()){
-            date.add("No trends available currently.");
+    public void setListViewItems(List<String> wait){
+        if(wait.isEmpty()){
+            wait.add("No trends available currently.");
             wait.add("");
         }
-        WaitTimeListAdapter whatever = new WaitTimeListAdapter(this, date, wait);
+        WaitTimeListAdapter whatever = new WaitTimeListAdapter(this, wait);
         listView.setAdapter(whatever);
         setListViewHeightBasedOnChildren(listView);
     }

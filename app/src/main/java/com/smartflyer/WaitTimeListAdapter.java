@@ -13,16 +13,12 @@ public class WaitTimeListAdapter extends ArrayAdapter {
     //to reference the Activity
     private final Activity context;
 
-    //to store the list of date
-    private final List<String> dateArray;
-
     //to store the list of wait
     private final List<String> waitArray;
 
-    public WaitTimeListAdapter(Activity context, List<String> dateArrayParam, List<String> waitArrayParam) {
-        super(context, R.layout.waittime_list, dateArrayParam);
+    public WaitTimeListAdapter(Activity context, List<String> waitArrayParam) {
+        super(context, R.layout.waittime_list, waitArrayParam);
         this.context = context;
-        this.dateArray = dateArrayParam;
         this.waitArray = waitArrayParam;
     }
 
@@ -31,18 +27,16 @@ public class WaitTimeListAdapter extends ArrayAdapter {
         View rowView = inflater.inflate(R.layout.waittime_list, null);
 
         //this code gets references to objects in the listview_row.xml file
-        TextView nameTextField = (TextView) rowView.findViewById(R.id.date);
         TextView infoTextField = (TextView) rowView.findViewById(R.id.wait);
 
         //this code sets the values of the objects to values from the arrays
-        nameTextField.setText(dateArray.get(position));
         infoTextField.setText(waitArray.get(position));
         return rowView;
     }
 
     @Override
     public int getCount() {
-        return dateArray.size();
+        return waitArray.size();
     }
 
     @Override

@@ -14,18 +14,10 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <TextView
             android:id="@+id/wait"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="TextView"
-            android:textSize="14sp" />
+            android:textSize="18sp" />
     </LinearLayout>
 </LinearLayout>
