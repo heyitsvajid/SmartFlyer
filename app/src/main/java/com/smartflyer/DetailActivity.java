@@ -99,7 +99,7 @@ public class DetailActivity extends AppCompatActivity {
         iata.setText(getIntent().getStringExtra("iata"));
         name.setText(getIntent().getStringExtra("name"));
         address.setText(getIntent().getStringExtra("city") + ", " + getIntent().getStringExtra("country"));
-        averageWaitTime.setText("Average wait time is : " + getIntent().getStringExtra("averageWaitTime"));
+        averageWaitTime.setText("" + getIntent().getStringExtra("averageWaitTime"));
 
         // Load the image using the Glide library and the Intent extra.
         Glide.with(this)

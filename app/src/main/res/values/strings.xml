@@ -23,7 +23,8 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
-    <string name="title_activity_search_airport">SearchAirport</string>
+    <string name="title_activity_search_airport">Search Airport</string>
+    <string name="title_activity_detail">Airport Detail</string>
 
     <!-- Google Sign In -->
     <string name="server_client_id">538454092955-0u2cqf9g4gon28r5pfnmr76gg0alm754.apps.googleusercontent.com</string>
