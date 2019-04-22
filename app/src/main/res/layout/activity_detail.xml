@@ -56,113 +56,146 @@
 
         <TextView
             android:id="@+id/statsTitle"
+            style="@style/TextAppearance.AppCompat.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="16dp"
             android:layout_below="@id/address"
-            style="@style/TextAppearance.AppCompat.Medium"
-            android:textStyle="bold"
             android:layout_centerHorizontal="true"
-            android:text="Wait Time Stats" />
+            android:padding="16dp"
+            android:text="Wait Time Stats"
+            android:textStyle="bold" />
 
         <LinearLayout
-            android:clipToPadding="false"
-            android:gravity="center"
-            android:orientation="horizontal"
+            android:id="@+id/stats"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/statsTitle"
-            android:id="@+id/stats"
+            android:clipToPadding="false"
+            android:gravity="center"
+            android:orientation="horizontal">
 
-            >
             <android.support.v7.widget.CardView
-                android:foreground="?android:attr/selectableItemBackground"
-                android:clickable="true"
                 android:id="@+id/bankcardId"
                 android:layout_width="160dp"
                 android:layout_height="190dp"
-                android:layout_margin="10dp">
+                android:layout_margin="10dp"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:orientation="vertical">
+
                     <ImageView
                         android:layout_width="64dp"
                         android:layout_height="64dp"
-                        android:src="@drawable/averagewait"
-                        android:padding="10dp"/>
+                        android:padding="10dp"
+                        android:src="@drawable/averagewait" />
+
                     <TextView
+                        android:id="@+id/averageWaitTime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textStyle="bold"
                         android:layout_marginTop="10dp"
                         android:text="Unknown"
-                        android:id="@+id/averageWaitTime"
-                        />
+                        android:textStyle="bold" />
+
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/lightgray"
-                        android:layout_margin="10dp"/>
+                        android:layout_margin="10dp"
+                        android:background="@color/lightgray" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="All Time Average"
                         android:padding="5dp"
-                        android:textColor="@android:color/darker_gray"/>
+                        android:text="All Time Average"
+                        android:textColor="@android:color/darker_gray" />
 
                 </LinearLayout>
             </android.support.v7.widget.CardView>
+
             <android.support.v7.widget.CardView
-                android:foreground="?android:attr/selectableItemBackground"
-                android:clickable="true"
                 android:layout_width="160dp"
                 android:layout_height="190dp"
-                android:layout_margin="10dp">
+                android:layout_margin="10dp"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:orientation="vertical">
+
                     <ImageView
                         android:layout_width="64dp"
                         android:layout_height="64dp"
-                        android:src="@drawable/averagesixhours"
-                        android:padding="10dp"/>
+                        android:padding="10dp"
+                        android:src="@drawable/averagesixhours" />
+
                     <TextView
+                        android:id="@+id/lastThreeHourAverage"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textStyle="bold"
                         android:layout_marginTop="10dp"
                         android:text="TODO"
-                        android:id="@+id/lastThreeHourAverage"/>
+                        android:textStyle="bold" />
+
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/lightgray"
-                        android:layout_margin="10dp"/>
+                        android:layout_margin="10dp"
+                        android:background="@color/lightgray" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="Average Last 6 Hours"
                         android:padding="5dp"
-                        android:textColor="@android:color/darker_gray"/>
-
+                        android:text="Average Last 6 Hours"
+                        android:textColor="@android:color/darker_gray" />
                 </LinearLayout>
             </android.support.v7.widget.CardView>
-
         </LinearLayout>
 
+        <View
+            android:id="@+id/hr2"
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:layout_below="@id/stats"
+            android:background="#000000" />
+
+
+        <TextView
+            android:id="@+id/graphTitle"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/hr2"
+            android:layout_centerHorizontal="true"
+            android:padding="16dp"
+            android:text="Wait Time Distribution"
+            android:textStyle="bold" />
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/chart1"
+            android:layout_width="fill_parent"
+            android:layout_height="400dp"
+            android:layout_below="@id/graphTitle"
+
+            />
 
 
         <View
             android:id="@+id/hr1"
             android:layout_width="fill_parent"
             android:layout_height="1dip"
-            android:layout_below="@id/stats"
+            android:layout_below="@id/chart1"
             android:background="#000000" />
 
         <TextView
@@ -170,20 +203,20 @@
             style="@style/TextAppearance.AppCompat.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:layout_centerHorizontal="true"
             android:layout_below="@id/hr1"
+            android:layout_centerHorizontal="true"
+            android:padding="16dp"
             android:text="User Trends"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <ListView
-                android:id="@+id/waitTimeList"
-                android:layout_below="@id/listViewTitle"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:fillViewport="true"
-                android:dividerHeight="1dp"
-                android:footerDividersEnabled="false"></ListView>
+            android:id="@+id/waitTimeList"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_below="@id/listViewTitle"
+            android:dividerHeight="1dp"
+            android:fillViewport="true"
+            android:footerDividersEnabled="false"></ListView>
 
         <View
             android:id="@+id/hr"
@@ -201,12 +234,12 @@
 
             <TextView
                 android:id="@+id/formTitle"
+                style="@style/TextAppearance.AppCompat.Medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
-                style="@style/TextAppearance.AppCompat.Medium"
-                android:textStyle="bold"
-                android:text="How long did you wait?" />
+                android:text="How long did you wait?"
+                android:textStyle="bold" />
 
             <NumberPicker
                 android:id="@+id/hourPicker"
@@ -266,20 +299,5 @@
                 android:padding="12dp"
                 android:text="Submit" />
         </RelativeLayout>
-        <!-- Signup Button
-        <android.support.design.button.MaterialButton
-            android:id="@+id/btn_logout"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:layout_below="@id/formTitle"
-            android:layout_marginBottom="24dp"
-            android:padding="12dp"
-            android:onClick="logout"
-            android:text="Logout Test Button" />
--->
     </RelativeLayout>
-
-
-
 </ScrollView>

@@ -43,7 +43,7 @@
             android:name=".DetailActivity"
             android:label="@string/title_activity_detail"></activity>
 
-        <activity android:name=".MainActivity" android:label="Login">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
