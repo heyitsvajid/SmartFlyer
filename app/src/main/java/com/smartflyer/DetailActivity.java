@@ -46,6 +46,8 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -65,7 +67,6 @@ public class DetailActivity extends AppCompatActivity {
     ArrayList<String> BarEntryLabels;
     BarDataSet Bardataset;
     BarData BARDATA;
-
     private NumberPicker hourPicker;
     private NumberPicker minutePicker;
     private RelativeLayout waitTimeForm;
@@ -74,6 +75,7 @@ public class DetailActivity extends AppCompatActivity {
     private TextView name;
     private TextView address;
     private TextView averageWaitTime;
+    private TextView lastSixHourAverageWaitTime;
     private ImageView mAirportImage;
 
     /**
@@ -104,6 +106,7 @@ public class DetailActivity extends AppCompatActivity {
         name = findViewById(R.id.name);
         address = findViewById(R.id.address);
         averageWaitTime = findViewById(R.id.averageWaitTime);
+        lastSixHourAverageWaitTime = findViewById(R.id.lastSixHourAverage);
         mAirportImage = findViewById(R.id.airportImage);
 
         id = getIntent().getStringExtra("_id");
@@ -125,20 +128,20 @@ public class DetailActivity extends AppCompatActivity {
 
     }
 
-    private ArrayList getDataSet() {
+    private ArrayList getDataSet(HashMap<String,Long> graphData) {
         ArrayList dataSets = null;
         ArrayList valueSet1 = new ArrayList();
-        BarEntry v1e1 = new BarEntry(110.000f, 0); // 0-4
+        BarEntry v1e1 = new BarEntry(graphData.get("0-3"), 0); // 0-4
         valueSet1.add(v1e1);
-        BarEntry v1e2 = new BarEntry(40.000f, 1); // 4-8
+        BarEntry v1e2 = new BarEntry(graphData.get("4-7"), 1); // 4-8
         valueSet1.add(v1e2);
-        BarEntry v1e3 = new BarEntry(60.000f, 2); // 8-12
+        BarEntry v1e3 = new BarEntry(graphData.get("8-11"), 2); // 8-12
         valueSet1.add(v1e3);
-        BarEntry v1e4 = new BarEntry(30.000f, 3); // 12-16
+        BarEntry v1e4 = new BarEntry(graphData.get("12-15"), 3); // 12-16
         valueSet1.add(v1e4);
-        BarEntry v1e5 = new BarEntry(90.000f, 4); // 16-20
+        BarEntry v1e5 = new BarEntry(graphData.get("16-19"), 4); // 16-20
         valueSet1.add(v1e5);
-        BarEntry v1e6 = new BarEntry(100.000f, 5); // 20-24
+        BarEntry v1e6 = new BarEntry(graphData.get("20-23"), 5); // 20-24
         valueSet1.add(v1e6);
 
         BarDataSet barDataSet1 = new BarDataSet(valueSet1, "Average Wait Time Minuutes");
@@ -196,27 +199,96 @@ public class DetailActivity extends AppCompatActivity {
                                         try {
                                             Log.w(TAG, "airport/getOne Response :" + response.toString());
                                             //User Trends Data
-                                            String averageWaitTime = (Double) response.get("averageWaitTime") + "";
+                                            String averageWaitTime = response.get("averageWaitTime").toString();
                                             JSONArray waitTimes = (JSONArray) response.get("waittimes");
+
+                                            //Wait time distribution
+                                            HashMap<String,Long> graphData = new HashMap<>();
+                                            graphData.put("0-3",0l);
+                                            graphData.put("4-7",0l);
+                                            graphData.put("8-11",0l);
+                                            graphData.put("12-15",0l);
+                                            graphData.put("16-19",0l);
+                                            graphData.put("20-23",0l);
+                                            //Last 6 hour Average
+                                            int count = 0;
+                                            long minutes = 0;
+
                                             List<String> averageWaitList = new ArrayList<>();
+                                            int currentHour = new Date().getHours();
                                             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                                             sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
                                             for (int i = 0; i < waitTimes.length(); i++) {
                                                 JSONObject current = (JSONObject) waitTimes.get(i);
                                                 String waitString = current.getString("created");
                                                 Date pubDate = sdf.parse(waitString);
-
                                                 SimpleDateFormat dateString = new SimpleDateFormat("MM-dd-yyyy");
                                                 dateString.setTimeZone(TimeZone.getDefault());
                                                 SimpleDateFormat timeString = new SimpleDateFormat("HH:mm:ss");
                                                 timeString.setTimeZone(TimeZone.getDefault());
+                                                int waitTimeHour = Integer.parseInt(timeString.format(pubDate).substring(0,2));
+                                                switch (waitTimeHour){
+                                                    case 0:
+                                                    case 1:
+                                                    case 2:
+                                                    case 3:
+                                                        graphData.put("0-3",graphData.get("0-3")+Long.parseLong(current.getString("wait")));
+                                                        break;
+                                                    case 4:
+                                                    case 5:
+                                                    case 6:
+                                                    case 7:
+                                                        graphData.put("4-7",graphData.get("0-3")+Long.parseLong(current.getString("wait")));
+                                                        break;
+                                                    case 8:
+                                                    case 9:
+                                                    case 10:
+                                                    case 11:
+                                                        graphData.put("8-11",graphData.get("0-3")+Long.parseLong(current.getString("wait")));
+                                                        break;
+                                                    case 12:
+                                                    case 13:
+                                                    case 14:
+                                                    case 15:
+                                                        graphData.put("12-15",graphData.get("0-3")+Long.parseLong(current.getString("wait")));
+                                                        break;
+                                                    case 16:
+                                                    case 17:
+                                                    case 18:
+                                                    case 19:
+                                                        graphData.put("16-19",graphData.get("0-3")+Long.parseLong(current.getString("wait")));
+                                                        break;
+                                                    case 20:
+                                                    case 21:
+                                                    case 22:
+                                                    case 23:
+                                                        graphData.put("20-23",graphData.get("0-3")+Long.parseLong(current.getString("wait")));
+                                                        break;
+                                                }
+
+                                                int date = Integer.parseInt(dateString.format(pubDate).substring(3,5));
+
+                                                if(date == new Date().getDate() && Math.abs(currentHour-waitTimeHour)<=6){
+                                                    count++;
+                                                    minutes+=Long.parseLong(current.getString("wait"));
+                                                    Log.w(TAG, "Count :" + count);
+                                                    Log.w(TAG, "Minutes :" + minutes);
+                                                }
+                                                Log.w(TAG, "Current Hour: " + currentHour);
+                                                Log.w(TAG, "Submitted Hour: " + waitTimeHour);
                                                 waitString = "Waited " +
                                                         current.getString("wait") + " mins" +
                                                         " on " + dateString.format(pubDate) +
                                                         " at " + timeString.format(pubDate);
                                                 averageWaitList.add(waitString);
                                             }
-                                            setUserTrends(averageWaitTime,averageWaitList);
+                                            String lastSixHourAverageWaitTime = "N/A";
+
+                                            if(count>0){
+                                                lastSixHourAverageWaitTime = String.valueOf(minutes/count);
+                                            }
+
+                                            setUserTrends(averageWaitTime,lastSixHourAverageWaitTime,averageWaitList,graphData);
                                         } catch (JSONException e) {
                                             Log.w(TAG, "JSONException :" + e.getMessage());
                                             e.printStackTrace();
@@ -375,9 +447,10 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
-    public void setUserTrends(String averageWait, List<String> waitList) {
+    public void setUserTrends(String averageWait,String lastSixHourAverageWait, List<String> waitList,HashMap<String,Long> graphData) {
         //Total Average Time
-        averageWaitTime.setText(averageWait);
+        averageWaitTime.setText(averageWait + " mins");
+        lastSixHourAverageWaitTime.setText(lastSixHourAverageWait + " mins");
 
         //User Submissions
         if (waitList.isEmpty()) {
@@ -389,13 +462,14 @@ public class DetailActivity extends AppCompatActivity {
         setListViewHeightBasedOnChildren(listView);
 
         //Wait Time Distribution
-        BarData data = new BarData(getXAxisValues(), getDataSet());
+        BarData data = new BarData(getXAxisValues(), getDataSet(graphData));
         chart.setData(data);
         chart.setDescription(" ");
         chart.animateXY(2000, 2000);
         chart.invalidate();
         chart.setBackgroundColor(Color.WHITE);
         chart.getXAxis().setDrawGridLines(false);
+        chart.getAxisLeft().setDrawGridLines(false);
     }
 
     public static void setListViewHeightBasedOnChildren(ListView listView) {

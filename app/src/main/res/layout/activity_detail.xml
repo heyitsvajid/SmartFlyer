@@ -139,11 +139,11 @@
                         android:src="@drawable/averagesixhours" />
 
                     <TextView
-                        android:id="@+id/lastThreeHourAverage"
+                        android:id="@+id/lastSixHourAverage"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="TODO"
+                        android:text="N/A"
                         android:textStyle="bold" />
 
                     <View
@@ -225,27 +225,28 @@
             android:layout_below="@id/waitTimeList"
             android:background="#000000" />
 
+        <TextView
+            android:id="@+id/formTitle"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/hr"
+            android:padding="16dp"
+            android:layout_centerHorizontal="true"
+            android:text="How long did you wait?"
+            android:textStyle="bold" />
+
         <RelativeLayout xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/waitTimeForm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/hr"
+            android:layout_below="@id/formTitle"
             android:gravity="center">
-
-            <TextView
-                android:id="@+id/formTitle"
-                style="@style/TextAppearance.AppCompat.Medium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:text="How long did you wait?"
-                android:textStyle="bold" />
 
             <NumberPicker
                 android:id="@+id/hourPicker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/formTitle"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
