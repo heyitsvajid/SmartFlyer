@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -32,13 +33,11 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.gson.JsonArray;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -50,7 +49,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.TimeZone;
 
 /***
@@ -59,8 +57,15 @@ import java.util.TimeZone;
  */
 public class DetailActivity extends AppCompatActivity {
 
-    // Initialize the views.
+    private static final String TAG = "DetailActivity";
     private SQLiteHandler sqLiteHandler;
+    private String id;
+    BarChart chart;
+    ArrayList<BarEntry> BARENTRY;
+    ArrayList<String> BarEntryLabels;
+    BarDataSet Bardataset;
+    BarData BARDATA;
+
     private NumberPicker hourPicker;
     private NumberPicker minutePicker;
     private RelativeLayout waitTimeForm;
@@ -70,14 +75,6 @@ public class DetailActivity extends AppCompatActivity {
     private TextView address;
     private TextView averageWaitTime;
     private ImageView mAirportImage;
-    private String id = "";
-
-
-    BarChart chart ;
-    ArrayList<BarEntry> BARENTRY ;
-    ArrayList<String> BarEntryLabels ;
-    BarDataSet Bardataset ;
-    BarData BARDATA ;
 
     /**
      * Initializes the activity, filling in the data from the Intent.
@@ -92,20 +89,9 @@ public class DetailActivity extends AppCompatActivity {
         sqLiteHandler = new SQLiteHandler(this);
         waitTimeForm = (RelativeLayout) findViewById(R.id.waitTimeForm);
         listView = (ListView) findViewById(R.id.waitTimeList);
-
-        setLayoutVisible(waitTimeForm);
-
-        //Bar Chart Code
         chart = (BarChart) findViewById(R.id.chart1);
 
-        BarData data = new BarData(getXAxisValues(), getDataSet());
-        chart.setData(data);
-      chart.setDescription(" ");
-        chart.animateXY(2000, 2000);
-        chart.invalidate();
-        chart.setBackgroundColor(Color.WHITE);
-        chart.getXAxis().setDrawGridLines(false);
-
+        setLayoutVisible(waitTimeForm);
         hourPicker = findViewById(R.id.hourPicker);
         minutePicker = findViewById(R.id.minutePicker);
         hourPicker.setMaxValue(10);
@@ -128,7 +114,6 @@ public class DetailActivity extends AppCompatActivity {
         iata.setText(getIntent().getStringExtra("iata"));
         name.setText(getIntent().getStringExtra("name"));
         address.setText(getIntent().getStringExtra("city") + ", " + getIntent().getStringExtra("country"));
-        averageWaitTime.setText("" + getIntent().getStringExtra("averageWaitTime"));
         // Load the image using the Glide library and the Intent extra.
         Glide.with(this)
                 .load(getIntent().getStringExtra("image")) // image url
@@ -209,44 +194,46 @@ public class DetailActivity extends AppCompatActivity {
                                     @Override
                                     public void onResponse(JSONObject response) {
                                         try {
+                                            Log.w(TAG, "airport/getOne Response :" + response.toString());
                                             //User Trends Data
+                                            String averageWaitTime = (Double) response.get("averageWaitTime") + "";
                                             JSONArray waitTimes = (JSONArray) response.get("waittimes");
-                                            System.out.println(waitTimes);
-                                            List<String> wait = new ArrayList<>();
+                                            List<String> averageWaitList = new ArrayList<>();
+                                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                                            sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
                                             for (int i = 0; i < waitTimes.length(); i++) {
                                                 JSONObject current = (JSONObject) waitTimes.get(i);
                                                 String waitString = current.getString("created");
-
-                                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-                                                sdf.setTimeZone(TimeZone.getDefault());
                                                 Date pubDate = sdf.parse(waitString);
-                                                SimpleDateFormat dateString = new SimpleDateFormat("MM-dd-yyyy");
-                                                SimpleDateFormat timeString = new SimpleDateFormat("HH:mm:ss");
 
+                                                SimpleDateFormat dateString = new SimpleDateFormat("MM-dd-yyyy");
+                                                dateString.setTimeZone(TimeZone.getDefault());
+                                                SimpleDateFormat timeString = new SimpleDateFormat("HH:mm:ss");
+                                                timeString.setTimeZone(TimeZone.getDefault());
                                                 waitString = "Waited " +
                                                         current.getString("wait") + " mins" +
-                                                        " on " + new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(pubDate) +
-                                                        " at " + new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(pubDate);
-                                                wait.add(waitString);
+                                                        " on " + dateString.format(pubDate) +
+                                                        " at " + timeString.format(pubDate);
+                                                averageWaitList.add(waitString);
                                             }
-                                            setListViewItems(wait);
+                                            setUserTrends(averageWaitTime,averageWaitList);
                                         } catch (JSONException e) {
-                                            System.out.println("Inner NOT WORKING!!" + e.getMessage());
+                                            Log.w(TAG, "JSONException :" + e.getMessage());
                                             e.printStackTrace();
                                         } catch (ParseException e) {
-                                            System.out.println("Inner NOT WORKING!!" + e.getMessage());
+                                            Log.w(TAG, "ParseException :" + e.getMessage());
                                             e.printStackTrace();
                                         }
                                     }
                                 }, new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                System.out.println("Outer NOT WORKING!!" + error.getMessage());
+                                Log.w(TAG, "airport/getOne ERROR:" + error.getMessage());
                             }
                         });
                         queue.add(jsObjRequest);
                     }
-                }, 3000);
+                }, 1);
     }
 
     public void logout(View v) {
@@ -359,26 +346,21 @@ public class DetailActivity extends AppCompatActivity {
                                 new Response.Listener<JSONObject>() {
                                     @Override
                                     public void onResponse(JSONObject response) {
-                                        try {
-                                            Toast.makeText(con, "Time Submitted Successfully.", Toast.LENGTH_LONG).show();
+                                        Log.w(TAG, "airport/addUserWaitTime Response: " + response.toString());
+                                        Toast.makeText(con, "Time Submitted Successfully.", Toast.LENGTH_LONG).show();
                                             setLayoutInvisible(waitTimeForm);
                                             getAirportStats(id);
-                                        } catch (Exception e) {
-                                            Toast.makeText(con, "Error submitting time.", Toast.LENGTH_LONG).show();
-                                            System.out.println("Inner NOT WORKING!!" + e.getMessage());
-                                            e.printStackTrace();
-                                        }
                                     }
                                 }, new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                Toast.makeText(con, "Error submitting time.", Toast.LENGTH_LONG).show();
-                                System.out.println("Outer NOT WORKING!!" + error.getMessage());
+                                Toast.makeText(con, "Error submitting time. Try Later.", Toast.LENGTH_LONG).show();
+                                Log.w(TAG, "airport/addUserWaitTime ERROR: " + error.getMessage());
                             }
                         });
                         queue.add(jsObjRequest);
                     }
-                }, 3000);
+                }, 3);
     }
 
     public void setLayoutInvisible(RelativeLayout tv) {
@@ -393,76 +375,27 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
-    public void getUserTrendsS() {
+    public void setUserTrends(String averageWait, List<String> waitList) {
+        //Total Average Time
+        averageWaitTime.setText(averageWait);
 
-        final String id = getIntent().getStringExtra("_id");
-        final Context con = this;
-        new android.os.Handler().postDelayed(
-                new Runnable() {
-                    public void run() {
-                        HashMap<String, String> params = new HashMap<String, String>();
-                        params.put("id", id); // the entered data as the body.
-                        final String URL = Config.BACKEND_URL + "airport/getOne"; // your URL
-                        final RequestQueue queue = Volley.newRequestQueue(con);
-                        queue.start();
-                        JsonObjectRequest jsObjRequest = new
-                                JsonObjectRequest(Request.Method.POST,
-                                URL,
-                                new JSONObject(params),
-                                new Response.Listener<JSONObject>() {
-                                    @Override
-                                    public void onResponse(JSONObject response) {
-                                        try {
-                                            JSONArray waitTimes = (JSONArray) response.get("waittimes");
-                                            System.out.println(waitTimes);
-                                            List<String> wait = new ArrayList<>();
-
-                                            for (int i = 0; i < waitTimes.length(); i++) {
-                                                JSONObject current = (JSONObject) waitTimes.get(i);
-                                                String waitString = current.getString("created");
-                                                try {
-                                                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-                                                    Date pubDate = sdf.parse(waitString);
-                                                    SimpleDateFormat dateString = new SimpleDateFormat("MM-dd-yyyy");
-                                                    SimpleDateFormat timeString = new SimpleDateFormat("HH:mm:ss");
-
-                                                    waitString = "Waited " +
-                                                            current.getString("wait") + " mins" +
-                                                            " on " + new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(pubDate) +
-                                                            " at " + new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(pubDate);
-
-                                                    //pubDate.get   new String(pubDate.toString());
-                                                } catch (Exception e) {
-                                                    e.printStackTrace();
-                                                }
-                                                wait.add(waitString);
-                                            }
-                                            setListViewItems(wait);
-                                        } catch (JSONException e) {
-                                            System.out.println("Inner NOT WORKING!!" + e.getMessage());
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                System.out.println("Outer NOT WORKING!!" + error.getMessage());
-                            }
-                        });
-                        queue.add(jsObjRequest);
-                    }
-                }, 3000);
-
-    }
-
-    public void setListViewItems(List<String> wait) {
-        if (wait.isEmpty()) {
-            wait.add("No trends available currently.");
-            wait.add("");
+        //User Submissions
+        if (waitList.isEmpty()) {
+            waitList.add("No trends available currently.");
+            waitList.add("");
         }
-        WaitTimeListAdapter whatever = new WaitTimeListAdapter(this, wait);
+        WaitTimeListAdapter whatever = new WaitTimeListAdapter(this, waitList);
         listView.setAdapter(whatever);
         setListViewHeightBasedOnChildren(listView);
+
+        //Wait Time Distribution
+        BarData data = new BarData(getXAxisValues(), getDataSet());
+        chart.setData(data);
+        chart.setDescription(" ");
+        chart.animateXY(2000, 2000);
+        chart.invalidate();
+        chart.setBackgroundColor(Color.WHITE);
+        chart.getXAxis().setDrawGridLines(false);
     }
 
     public static void setListViewHeightBasedOnChildren(ListView listView) {

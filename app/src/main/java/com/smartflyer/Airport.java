@@ -1,12 +1,13 @@
 package com.smartflyer;
 
+import java.util.Arrays;
+
 /**
- * Data model for each row of the RecyclerView
+ * Airport Data model for each row of the RecyclerView
  */
 public class Airport {
 
     // Member variables.
-
     private String name;
     private String _id;
     private String city;
@@ -108,4 +109,19 @@ public class Airport {
 
     public void setAverageWaitTime(String averageWaitTime) { this.averageWaitTime = averageWaitTime; }
 
+    @Override
+    public String toString() {
+        return "Airport{" +
+                "name='" + name + '\'' +
+                ", _id='" + _id + '\'' +
+                ", city='" + city + '\'' +
+                ", country='" + country + '\'' +
+                ", iata='" + iata + '\'' +
+                ", latitude='" + latitude + '\'' +
+                ", longitude='" + longitude + '\'' +
+                ", waitTimes=" + Arrays.toString(waitTimes) +
+                ", image='" + image + '\'' +
+                ", averageWaitTime='" + averageWaitTime + '\'' +
+                '}';
+    }
 }

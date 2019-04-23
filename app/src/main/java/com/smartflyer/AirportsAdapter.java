@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,7 +17,7 @@ import java.util.HashMap;
 /***
  * The adapter class for the RecyclerView, contains the airports data.
  */
-public class AirportsAdapter extends RecyclerView.Adapter<AirportsAdapter.ViewHolder>  {
+public class AirportsAdapter extends RecyclerView.Adapter<AirportsAdapter.ViewHolder> {
 
     // Member variables.
     private ArrayList<Airport> mAirportsData;
@@ -28,7 +27,7 @@ public class AirportsAdapter extends RecyclerView.Adapter<AirportsAdapter.ViewHo
      * Constructor that passes in the airports data and the context.
      *
      * @param airportsData ArrayList containing the airports data.
-     * @param context Context of the application.
+     * @param context      Context of the application.
      */
     AirportsAdapter(Context context, ArrayList<Airport> airportsData) {
         this.mAirportsData = airportsData;
@@ -39,8 +38,8 @@ public class AirportsAdapter extends RecyclerView.Adapter<AirportsAdapter.ViewHo
     /**
      * Required method for creating the viewholder objects.
      *
-     * @param parent The ViewGroup into which the new View will be added
-     *               after it is bound to an adapter position.
+     * @param parent   The ViewGroup into which the new View will be added
+     *                 after it is bound to an adapter position.
      * @param viewType The view type of the new View.
      * @return The newly created ViewHolder.
      */
@@ -54,7 +53,7 @@ public class AirportsAdapter extends RecyclerView.Adapter<AirportsAdapter.ViewHo
     /**
      * Required method that binds the data to the viewholder.
      *
-     * @param holder The viewholder into which the data should be put.
+     * @param holder   The viewholder into which the data should be put.
      * @param position The adapter position.
      */
     @Override
@@ -81,7 +80,7 @@ public class AirportsAdapter extends RecyclerView.Adapter<AirportsAdapter.ViewHo
      * ViewHolder class that represents each row of data in the RecyclerView.
      */
     class ViewHolder extends RecyclerView.ViewHolder
-            implements View.OnClickListener{
+            implements View.OnClickListener {
 
         // Member Variables for the TextViews
         private TextView icao;
@@ -89,6 +88,7 @@ public class AirportsAdapter extends RecyclerView.Adapter<AirportsAdapter.ViewHo
         private ImageView mAirportImage;
         private TextView address;
         private ImageView openMapButton;
+
         /**
          * Constructor for the ViewHolder, used in onCreateViewHolder().
          *
@@ -99,7 +99,7 @@ public class AirportsAdapter extends RecyclerView.Adapter<AirportsAdapter.ViewHo
 
             // Initialize the views.
             icao = itemView.findViewById(R.id.icao);
-            name= itemView.findViewById(R.id.name);
+            name = itemView.findViewById(R.id.name);
             address = itemView.findViewById(R.id.address);
             mAirportImage = itemView.findViewById(R.id.airportImage);
             openMapButton = itemView.findViewById(R.id.mapButton);
@@ -107,15 +107,16 @@ public class AirportsAdapter extends RecyclerView.Adapter<AirportsAdapter.ViewHo
             itemView.setOnClickListener(this);
         }
 
-        void bindTo(Airport currentAirport){
+        void bindTo(Airport currentAirport) {
             // Populate the textviews with data.
             name.setText(currentAirport.getName());
             icao.setText(currentAirport.getIata());
             address.setText(currentAirport.getCity() + ", " + currentAirport.getCountry());
-            HashMap<String,String> latLng = new HashMap<>();
-            latLng.put("lat",currentAirport.getLatitude());
-            latLng.put("lng",currentAirport.getLongitude());
-            openMapButton.setTag(latLng);
+            HashMap<String, String> details = new HashMap<>();
+            details.put("lat", currentAirport.getLatitude());
+            details.put("lng", currentAirport.getLongitude());
+            details.put("name", currentAirport.getName());
+            openMapButton.setTag(details);
             // Load the images into the ImageView using the Glide library.
             Glide.with(mContext)
                     .load(currentAirport.getImage()) // image url
@@ -141,8 +142,6 @@ public class AirportsAdapter extends RecyclerView.Adapter<AirportsAdapter.ViewHo
             detailIntent.putExtra("country", currentAirport.getCountry());
             detailIntent.putExtra("iata", currentAirport.getIata());
             detailIntent.putExtra("image", currentAirport.getImage());
-            System.out.print(currentAirport.getAverageWaitTime());
-            detailIntent.putExtra("averageWaitTime", currentAirport.getAverageWaitTime());
             mContext.startActivity(detailIntent);
         }
     }

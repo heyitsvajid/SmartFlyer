@@ -21,6 +21,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -72,9 +73,10 @@ import static com.google.android.gms.location.LocationServices.getFusedLocationP
 
 
 public class SearchAirport extends AppCompatActivity {
+    private static final String TAG = "SearchAirport";
+
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
-    private static final float DEFAULT_ZOOM = 15f;
     private Boolean mLocationPermissionsGranted = false;
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COURSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
@@ -91,16 +93,6 @@ public class SearchAirport extends AppCompatActivity {
         setContentView(R.layout.activity_search_airport);
         sqLiteHandler = new SQLiteHandler(this);
         searchAirport = new SearchAirport();
-        //check user login state
-        HashMap<String,String> user = sqLiteHandler.getLoggedInUser();
-        if(user!=null){
-            Toast.makeText(getBaseContext(), "Hello " + user.get("name"), Toast.LENGTH_LONG).show();
-        }else{
-            Intent intent = new Intent(SearchAirport.this, MainActivity.class);
-            startActivity(intent);
-            Toast.makeText(getBaseContext(), "Login to continue", Toast.LENGTH_LONG).show();
-            finish();
-        }
 
         // Initialize the RecyclerView.
         mRecyclerView = findViewById(R.id.recyclerView);
@@ -119,38 +111,47 @@ public class SearchAirport extends AppCompatActivity {
         getDeviceLocation();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        //check user login state
+        HashMap<String,String> user = sqLiteHandler.getLoggedInUser();
+        if(user!=null){
+
+        }else{
+            Intent intent = new Intent(SearchAirport.this, MainActivity.class);
+            startActivity(intent);
+            Toast.makeText(getBaseContext(), "Login to continue", Toast.LENGTH_LONG).show();
+            finish();
+        }
+    }
+
     private void getDeviceLocation() {
 
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         getLocationPermission();
-        Toast.makeText(getApplicationContext(), mLocationPermissionsGranted.toString(), Toast.LENGTH_SHORT).show();
         try{
             if(mLocationPermissionsGranted){
-                Toast.makeText(getApplicationContext(), "Permission Granted To device", Toast.LENGTH_SHORT).show();
                final Task location = mFusedLocationProviderClient.getLastLocation();
                 location.addOnCompleteListener(new OnCompleteListener() {
                     @Override
                     public void onComplete(@NonNull Task task) {
                         if(task.isSuccessful()){
                             Location currentLocation = (Location) task.getResult();
-                            System.out.println("LOOK AT  "+currentLocation);
-                            Toast.makeText(getApplicationContext(), currentLocation.toString(), Toast.LENGTH_SHORT).show();
+                            Log.w(TAG,"Current Location:" + currentLocation);
                             HashMap<String, String> params = new HashMap<String,String>();
                             params.put("lat", String.valueOf(currentLocation.getLatitude())); // the entered data as the body.
                             params.put("lon", String.valueOf(currentLocation.getLongitude())); // the entered data as the body.
                             callAirportsApi(params,"airport/getNearest");
-                            //Snackbar.make(rootView,"You can now search cafes",Snackbar.LENGTH_SHORT).show();
-
                         }else{
-                            //Snackbar.make(rootView,"Location not found!",Snackbar.LENGTH_SHORT).show();
-
+                            Toast.makeText(getApplicationContext(), "Location permission not available.", Toast.LENGTH_SHORT).show();
                         }
                     }
               });
-
             }
         }catch (SecurityException e){
-            //Snackbar.make(rootView,e.getMessage(),Snackbar.LENGTH_SHORT).show();
+            Log.w(TAG,"SecurityException :" + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -227,7 +228,7 @@ public class SearchAirport extends AppCompatActivity {
                                     @Override
                                     public void onResponse(JSONObject response) {
                                         try {
-                                            System.out.println("Success Reponse");
+                                            Log.w(TAG, url+ " Response: " + response.toString());
                                             JSONArray arr = (JSONArray)response.get("data");
                                             setData(arr);
                                             if(arr.length() > 0){
@@ -236,19 +237,19 @@ public class SearchAirport extends AppCompatActivity {
                                                 Toast.makeText(getApplicationContext(), "No airports found.", Toast.LENGTH_SHORT).show();
                                             }
                                         } catch (JSONException e) {
-                                            System.out.println("Inner NOT WORKING!!" + e.getMessage());
+                                            Log.w(TAG, url+ " JSONException: " + e.getMessage());
                                             e.printStackTrace();
                                         }
                                     }
                                 }, new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                System.out.println("Outer NOT WORKING!!"+ error.getMessage());
+                                Log.w(TAG, url+ " ERROR: " + error.getMessage());
                             }
                         });
                         queue.add(jsObjRequest);
                     }
-                }, 3000);
+                }, 3);
         return result;
     }
 
@@ -260,7 +261,6 @@ public class SearchAirport extends AppCompatActivity {
         mAirportsData.clear();
         try {
             for (int i = 0; i < arr.length(); i++) {
-                System.out.println(arr.get(i));
                 JSONObject o = (JSONObject)arr.get(i);
                 Airport a = new Airport(o.getString("_id"),o.getString("name"),
                         o.getString("city"),o.getString("country"),o.getString("iata"),
@@ -323,13 +323,11 @@ public class SearchAirport extends AppCompatActivity {
     }
 
     public void showInMap(View v){
-        HashMap<String,String> latLng = (HashMap)v.getTag();
-        System.out.println(latLng.get("lat"));
-        String lat = latLng.get("lat");
-        String lng = latLng.get("lng");
-        Uri gmmIntentUri = Uri.parse("geo:"+lat+","+lng);
-        //Uri gmmIntentUri = Uri.parse("google.streetview:cbll="+lat+","+lng);
-        //google.streetview:cbll=46.414382,10.013988
+        HashMap<String,String> details = (HashMap)v.getTag();
+        String lat = details.get("lat");
+        String lng = details.get("lng");
+        String name = details.get("name");
+        Uri gmmIntentUri = Uri.parse("geo:0,0?q="+lat+","+lng+ "(" + name + ")");
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
         mapIntent.setPackage("com.google.android.apps.maps");
         if (mapIntent.resolveActivity(getPackageManager()) != null) {

@@ -27,7 +27,6 @@ import java.util.HashMap;
 public class SignupActivity extends AppCompatActivity {
 
     private static final String TAG = "SignupActivity";
-
     EditText _nameText;
     EditText _emailText;
     EditText _passwordText;
@@ -56,7 +55,7 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Finish the registration screen and return to the Login activity
-                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -92,9 +91,9 @@ public class SignupActivity extends AppCompatActivity {
                         // On complete call either onSignupSuccess or onSignupFailed
                         // depending on success
 
-                        HashMap<String, String> params = new HashMap<String,String>();
+                        HashMap<String, String> params = new HashMap<String, String>();
                         params.put("email", email); // the entered data as the body.
-                        params.put("password",password);
+                        params.put("password", password);
                         params.put("name", name);
                         final String URL = Config.BACKEND_URL + "user/insert"; // your URL
 
@@ -107,20 +106,14 @@ public class SignupActivity extends AppCompatActivity {
                                 new Response.Listener<JSONObject>() {
                                     @Override
                                     public void onResponse(JSONObject response) {
-                                        try {
-                                            System.out.println(response.get("message"));
-                                            onSignupSuccess();
-                                        } catch (JSONException e) {
-                                            System.out.println("Inner NOT WORKING!!" + e.getMessage());
-                                            onSignupFailed();
-                                            e.printStackTrace();
-                                        }
+                                        Log.w(TAG, "user/insert Response: " + response);
+                                        onSignupSuccess();
                                     }
                                 }, new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
+                                Log.w(TAG, "user/insert Error: " + error.getMessage());
                                 onSignupFailed();
-                                System.out.println("Outer NOT WORKING!!"+ error.getMessage());
                             }
                         });
                         queue.add(jsObjRequest);
@@ -168,7 +161,6 @@ public class SignupActivity extends AppCompatActivity {
         } else {
             _passwordText.setError(null);
         }
-
         return valid;
     }
 }

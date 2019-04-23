@@ -32,10 +32,6 @@
         </activity>
 
         <activity
-            android:name=".WaitTimeFeedActivity"
-            android:label="@string/title_activity_wait_time_feed"></activity>
-
-        <activity
             android:name=".SearchAirport"
             android:label= "@string/title_activity_search_airport"></activity>
 

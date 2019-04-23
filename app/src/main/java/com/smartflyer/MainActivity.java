@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private SignInButton googleSignInButton;
     private GoogleSignInClient googleSignInClient;
     private SQLiteHandler sqLiteHandler;
-    private static final String TAG = "LoginActivity";
+    private static final String TAG = "MainActivity";
     private static final int REQUEST_SIGNUP = 0;
 
     EditText _emailText;
@@ -55,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
         _passwordText = findViewById(R.id.input_password);
         _loginButton = findViewById(R.id.btn_login);
         _signupLink = findViewById(R.id.link_signup);
-
         _loginButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -82,20 +81,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Build a GoogleSignInClient with the options specified by gso.
         googleSignInClient = GoogleSignIn.getClient(this, gso);
-
-        //check user login state
-        HashMap<String,String> user = sqLiteHandler.getLoggedInUser();
-
-        //Check if already signed in
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        if (account != null) {
-            Log.w("PreviousGoogleLogin", account.toString());
-            onLoginSuccess(account.getDisplayName(), account.getEmail());
-        } else if(user!=null){
-            Log.w("PreviousCustumlogin", user.toString());
-            onLoginSuccess(user.get("name"),user.get("email"));
-        }
-
         googleSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,14 +88,23 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(signInIntent, 101);
             }
         });
-
-
-
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        //check user login state
+        HashMap<String,String> user = sqLiteHandler.getLoggedInUser();
 
-
-    public void skipLogin(View v) {
+        //Check if already signed in
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        if (account != null) {
+            Log.w(TAG,"PreviousGoogleLogin:" + account.toString());
+            onLoginSuccess(account.getDisplayName(), account.getEmail());
+        } else if(user!=null){
+            Log.w(TAG,"PreviousCustumlogin:" + user.toString());
+            onLoginSuccess(user.get("name"),user.get("email"));
+        }
     }
 
     //This method will be called on Google SIgn In request complete
@@ -186,10 +180,10 @@ public class MainActivity extends AppCompatActivity {
                                     @Override
                                     public void onResponse(JSONObject response) {
                                         try {
-                                            System.out.println(response.get("name"));
+                                            Log.w(TAG, "airport/addUserWaitTime Response: " + response);
                                             onLoginSuccess(response.getString("name"),response.getString("email"));
                                         } catch (JSONException e) {
-                                            System.out.println("Inner NOT WORKING!!" + e.getMessage());
+                                            Log.w(TAG, "airport/addUserWaitTime JSONException: " + e.getMessage());
                                             onLoginFailed();
                                             e.printStackTrace();
                                         }
@@ -198,13 +192,13 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onErrorResponse(VolleyError error) {
                                 onLoginFailed();
-                                System.out.println("Outer NOT WORKING!!"+ error.getMessage());
+                                Log.w(TAG, "airport/addUserWaitTime Error: " + error.getMessage());
                             }
                         });
                         queue.add(jsObjRequest);
                         progressDialog.dismiss();
                     }
-                }, 3000);
+                }, 3);
     }
 
     public void onLoginSuccess(String name, String email) {
