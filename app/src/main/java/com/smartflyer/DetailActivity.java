@@ -2,6 +2,8 @@ package com.smartflyer;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -151,7 +153,11 @@ public class DetailActivity extends AppCompatActivity {
         // Handle action bar actions click
         switch (item.getItemId()) {
             case R.id.rate_app:
-                Toast.makeText(this, "Future feature", Toast.LENGTH_SHORT).show();
+                RatingDialogue ratingDialogue = new RatingDialogue(DetailActivity.this);
+                ratingDialogue.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                ratingDialogue.setCancelable(true);
+                ratingDialogue.setTitle("Rate App");
+                ratingDialogue.show();
                 return true;
             case R.id.action_logout:
                 logout();

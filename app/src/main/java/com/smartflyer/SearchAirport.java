@@ -1,9 +1,13 @@
 package com.smartflyer;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,6 +17,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,7 +27,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -77,12 +84,13 @@ public class SearchAirport extends AppCompatActivity {
     private ArrayList<Airport> mAirportsData;
     private AirportsAdapter mAdapter;
     private EditText edit_txt;
+    SearchAirport searchAirport;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_airport);
         sqLiteHandler = new SQLiteHandler(this);
-
+        searchAirport = new SearchAirport();
         //check user login state
         HashMap<String,String> user = sqLiteHandler.getLoggedInUser();
         if(user!=null){
@@ -278,7 +286,11 @@ public class SearchAirport extends AppCompatActivity {
         // Handle action bar actions click
         switch (item.getItemId()) {
             case R.id.rate_app:
-                Toast.makeText(this, "Future feature", Toast.LENGTH_SHORT).show();
+                RatingDialogue ratingDialogue = new RatingDialogue(SearchAirport.this);
+                ratingDialogue.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                ratingDialogue.setCancelable(true);
+                ratingDialogue.setTitle("Rate App");
+                ratingDialogue.show();
                 return true;
             case R.id.action_logout:
                 logout();
