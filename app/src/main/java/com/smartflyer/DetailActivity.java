@@ -385,6 +385,9 @@ public class DetailActivity extends AppCompatActivity {
                 ratingDialogue.setTitle("Rate App");
                 ratingDialogue.show();
                 return true;
+            case R.id.leader_board:
+                Intent intent = new Intent(DetailActivity.this, activity_leaderboard.class);
+                startActivity(intent);
             case R.id.action_logout:
                 logout();
                 return true;

@@ -28,5 +28,11 @@
 
     <!-- Google Sign In -->
     <string name="server_client_id">538454092955-0u2cqf9g4gon28r5pfnmr76gg0alm754.apps.googleusercontent.com</string>
+    <string name="title_activity_leaderboard">activity_leaderboard</string>
+    
+    <string-array name="user">
+        <item>Test</item>
+        <item>Test</item>
+    </string-array>
 
 </resources>

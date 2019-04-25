@@ -22,26 +22,28 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Shrine"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name=".activity_leaderboard"
+            android:label="Leaderboard"></activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyABLXW0iZhbwkN7JkCPSF27dYVW0JFwPB4" />
 
-        <activity android:name=".SignupActivity"
-            android:label="Sign Up">
-        </activity>
-
+        <activity
+            android:name=".SignupActivity"
+            android:label="Sign Up"></activity>
         <activity
             android:name=".SearchAirport"
-            android:label= "@string/title_activity_search_airport"></activity>
-
+            android:label="@string/title_activity_search_airport" />
         <activity
             android:name=".DetailActivity"
-            android:label="@string/title_activity_detail"></activity>
+            android:label="@string/title_activity_detail" />
 
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

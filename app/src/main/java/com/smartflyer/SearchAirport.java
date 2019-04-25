@@ -295,6 +295,9 @@ public class SearchAirport extends AppCompatActivity {
             case R.id.action_logout:
                 logout();
                 return true;
+            case R.id.leader_board:
+                Intent intent = new Intent(SearchAirport.this, activity_leaderboard.class);
+                startActivity(intent);
             default:
                 return super.onOptionsItemSelected(item);
         }
