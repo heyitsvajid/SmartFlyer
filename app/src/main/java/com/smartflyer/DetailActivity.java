@@ -144,13 +144,11 @@ public class DetailActivity extends AppCompatActivity {
         BarEntry v1e6 = new BarEntry(graphData.get("20-23"), 5); // 20-24
         valueSet1.add(v1e6);
 
-        BarDataSet barDataSet1 = new BarDataSet(valueSet1, "Average Wait Time Minuutes");
-//        barDataSet1.setColor(Color.rgb(0, 155, 0));
-        barDataSet1.setColors(ColorTemplate.COLORFUL_COLORS);
+        BarDataSet barDataSet1 = new BarDataSet(valueSet1, "Average Wait Time Minutes");
+        barDataSet1.setColors(ColorTemplate.JOYFUL_COLORS);
 
         dataSets = new ArrayList();
         dataSets.add(barDataSet1);
-//        dataSets.add(barDataSet2);
         return dataSets;
     }
 
@@ -204,12 +202,20 @@ public class DetailActivity extends AppCompatActivity {
 
                                             //Wait time distribution
                                             HashMap<String,Long> graphData = new HashMap<>();
+                                            HashMap<String,Long> graphCount = new HashMap<>();
+
                                             graphData.put("0-3",0l);
                                             graphData.put("4-7",0l);
                                             graphData.put("8-11",0l);
                                             graphData.put("12-15",0l);
                                             graphData.put("16-19",0l);
                                             graphData.put("20-23",0l);
+                                            graphCount.put("0-3",0l);
+                                            graphCount.put("4-7",0l);
+                                            graphCount.put("8-11",0l);
+                                            graphCount.put("12-15",0l);
+                                            graphCount.put("16-19",0l);
+                                            graphCount.put("20-23",0l);
                                             //Last 6 hour Average
                                             int count = 0;
                                             long minutes = 0;
@@ -233,39 +239,45 @@ public class DetailActivity extends AppCompatActivity {
                                                     case 2:
                                                     case 3:
                                                         graphData.put("0-3",graphData.get("0-3")+Long.parseLong(current.getString("wait")));
+                                                        graphCount.put("0-3",graphCount.get("0-3")+1);
+
                                                         break;
                                                     case 4:
                                                     case 5:
                                                     case 6:
                                                     case 7:
-                                                        graphData.put("4-7",graphData.get("0-3")+Long.parseLong(current.getString("wait")));
+                                                        graphData.put("4-7",graphData.get("4-7")+Long.parseLong(current.getString("wait")));
+                                                        graphCount.put("4-7",graphCount.get("4-7")+1);
                                                         break;
                                                     case 8:
                                                     case 9:
                                                     case 10:
                                                     case 11:
-                                                        graphData.put("8-11",graphData.get("0-3")+Long.parseLong(current.getString("wait")));
+                                                        graphData.put("8-11",graphData.get("8-11")+Long.parseLong(current.getString("wait")));
+                                                        graphCount.put("8-11",graphCount.get("8-11")+1);
                                                         break;
                                                     case 12:
                                                     case 13:
                                                     case 14:
                                                     case 15:
-                                                        graphData.put("12-15",graphData.get("0-3")+Long.parseLong(current.getString("wait")));
+                                                        graphData.put("12-15",graphData.get("12-15")+Long.parseLong(current.getString("wait")));
+                                                        graphCount.put("12-15",graphCount.get("12-15")+1);
                                                         break;
                                                     case 16:
                                                     case 17:
                                                     case 18:
                                                     case 19:
-                                                        graphData.put("16-19",graphData.get("0-3")+Long.parseLong(current.getString("wait")));
+                                                        graphData.put("16-19",graphData.get("16-19")+Long.parseLong(current.getString("wait")));
+                                                        graphCount.put("16-19",graphCount.get("16-19")+1);
                                                         break;
                                                     case 20:
                                                     case 21:
                                                     case 22:
                                                     case 23:
-                                                        graphData.put("20-23",graphData.get("0-3")+Long.parseLong(current.getString("wait")));
+                                                        graphData.put("20-23",graphData.get("20-23")+Long.parseLong(current.getString("wait")));
+                                                        graphCount.put("20-23",graphCount.get("20-23")+1);
                                                         break;
                                                 }
-
                                                 int date = Integer.parseInt(dateString.format(pubDate).substring(3,5));
 
                                                 if(date == new Date().getDate() && Math.abs(currentHour-waitTimeHour)<=6){
@@ -283,6 +295,27 @@ public class DetailActivity extends AppCompatActivity {
                                                 averageWaitList.add(waitString);
                                             }
                                             String lastSixHourAverageWaitTime = "N/A";
+                                            Log.w(TAG,"Graph Minutes: " + graphData.toString());
+                                            Log.w(TAG,"Graph Count: " + graphCount.toString());
+
+                                            if(graphCount.get("0-3")>0){
+                                                graphData.put("0-3",graphData.get("0-3")/graphCount.get("0-3"));
+                                            }
+                                            if(graphCount.get("4-7")>0){
+                                                graphData.put("4-7",graphData.get("4-7")/graphCount.get("4-7"));
+                                            }
+                                            if(graphCount.get("8-11")>0){
+                                                graphData.put("8-11",graphData.get("8-11")/graphCount.get("8-11"));
+                                            }
+                                            if(graphCount.get("12-15")>0){
+                                                graphData.put("12-15",graphData.get("12-15")/graphCount.get("12-15"));
+                                            }
+                                            if(graphCount.get("16-19")>0){
+                                                graphData.put("16-19",graphData.get("16-19")/graphCount.get("16-19"));
+                                            }
+                                            if(graphCount.get("20-23")>0){
+                                                graphData.put("20-23",graphData.get("20-23")/graphCount.get("20-23"));
+                                            }
 
                                             if(count>0){
                                                 lastSixHourAverageWaitTime = String.valueOf(minutes/count);
@@ -496,6 +529,5 @@ public class DetailActivity extends AppCompatActivity {
 
         listView.setLayoutParams(params);
         listView.requestLayout();
-
     }
 }
