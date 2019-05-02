@@ -49,6 +49,7 @@ public class activity_leaderboard extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leaderboard);
+        sqLiteHandler = new SQLiteHandler(this);
 
         // Initialize the RecyclerView.
         recyclerView = findViewById(R.id.leaderboard_list);
@@ -168,6 +169,10 @@ public class activity_leaderboard extends AppCompatActivity {
 
         // Handle action bar actions click
         switch (item.getItemId()) {
+            case R.id.search_airport:
+                Intent searchIntent = new Intent(activity_leaderboard.this, SearchAirport.class);
+                startActivity(searchIntent);
+                return true;
             case R.id.rate_app:
                 RatingDialogue ratingDialogue = new RatingDialogue(activity_leaderboard.this);
                 ratingDialogue.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -176,8 +181,7 @@ public class activity_leaderboard extends AppCompatActivity {
                 ratingDialogue.show();
                 return true;
             case R.id.leader_board:
-                Intent intent = new Intent(activity_leaderboard.this, activity_leaderboard.class);
-                startActivity(intent);
+                return true;
             case R.id.action_logout:
                 logout();
                 return true;

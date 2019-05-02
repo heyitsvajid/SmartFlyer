@@ -2,62 +2,39 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="350dp"
-    android:layout_height="250dp"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@drawable/dialogue_background"
+    android:background="@drawable/app_logo"
+    android:gravity="center"
+    android:id="@+id/ratingDialod"
     >
-
+    <TextView
+        android:id="@+id/graphTitle"
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/hr2"
+        android:layout_centerHorizontal="true"
+        android:padding="16dp"
+        android:text="Rate Smart Flyer"
+        android:textStyle="bold" />
     <RatingBar
         android:id="@+id/rating"
         style="?android:attr/ratingBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="150px"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="125dp"
         android:clickable="true"
         android:numStars="5"
         android:stepSize="1.0" />
-        <!--android:isIndicator="true"-->
 
     <Button
         android:id="@+id/dialogButtonOK"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:layout_gravity="center"
         android:layout_marginTop="12dp"
-        android:text=" Ok "
+        android:text="Submit"
         />
-
-
-    <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_below="@id/rating"-->
-        <!--android:layout_gravity="center"-->
-        <!--android:orientation="horizontal"-->
-        <!--android:layout_marginTop="20dp"-->
-        <!--android:paddingLeft="110dp"-->
-
-        <!--&gt;-->
-
-        <!--<Button-->
-            <!--android:id="@+id/dialogButtonOK"-->
-            <!--android:layout_width="100dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:gravity="center"-->
-            <!--android:text=" Ok " />-->
-
-        <!--<Button-->
-            <!--android:id="@+id/dialogButtonCANCEL"-->
-            <!--android:layout_width="100dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:gravity="center"-->
-            <!--android:layout_marginRight="0px"-->
-            <!--android:layout_toLeftOf="@id/dialogButtonOK"-->
-            <!--android:text=" Cancel " />-->
-    <!--</LinearLayout>-->
-
-
 </LinearLayout>

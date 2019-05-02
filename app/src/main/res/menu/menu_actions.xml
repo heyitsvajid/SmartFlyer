@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/search_airport"
+        android:title="Search Airport"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/leader_board"
         android:title="Leaderboard"
         android:orderInCategory="100"
