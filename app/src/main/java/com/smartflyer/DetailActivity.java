@@ -126,8 +126,16 @@ public class DetailActivity extends AppCompatActivity {
                 .centerCrop()
                 .into(mAirportImage);  // imageview object
 
+        checkConnection();
     }
 
+    private boolean checkConnection(){
+        if(Utility.isConnected(DetailActivity.this)){
+            return true;
+        }
+        Toast.makeText(getBaseContext(), "Internet not connected. Try again later.", Toast.LENGTH_LONG).show();
+        return false;
+    }
     private ArrayList getDataSet(HashMap<String,Long> graphData) {
         ArrayList dataSets = null;
         ArrayList valueSet1 = new ArrayList();
@@ -154,12 +162,12 @@ public class DetailActivity extends AppCompatActivity {
 
     private ArrayList getXAxisValues() {
         ArrayList xAxis = new ArrayList();
-        xAxis.add("0-4");
-        xAxis.add("4-8");
-        xAxis.add("8-12");
-        xAxis.add("12-16");
-        xAxis.add("16-20");
-        xAxis.add("20-24");
+        xAxis.add("0-3:59");
+        xAxis.add("4-7:59");
+        xAxis.add("8-11:59");
+        xAxis.add("12-15:59");
+        xAxis.add("16-19:59");
+        xAxis.add("20-23:59");
         return xAxis;
     }
 
@@ -378,6 +386,10 @@ public class DetailActivity extends AppCompatActivity {
 
         // Handle action bar actions click
         switch (item.getItemId()) {
+            case R.id.search_airport:
+                Intent searchIntent = new Intent(DetailActivity.this, SearchAirport.class);
+                startActivity(searchIntent);
+                return true;
             case R.id.rate_app:
                 RatingDialogue ratingDialogue = new RatingDialogue(DetailActivity.this);
                 ratingDialogue.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -385,11 +397,12 @@ public class DetailActivity extends AppCompatActivity {
                 ratingDialogue.setTitle("Rate App");
                 ratingDialogue.show();
                 return true;
+            case R.id.action_logout:
+                logout();
+                return true;
             case R.id.leader_board:
                 Intent intent = new Intent(DetailActivity.this, activity_leaderboard.class);
                 startActivity(intent);
-            case R.id.action_logout:
-                logout();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -422,6 +435,9 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     public void submitWaitTime(View v) {
+        if(!checkConnection())
+            return;
+
         int hour = hourPicker.getValue();
         int minute = minutePicker.getValue();
 

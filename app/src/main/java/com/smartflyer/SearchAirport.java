@@ -109,6 +109,15 @@ public class SearchAirport extends AppCompatActivity {
 
         // Get the location.
         getDeviceLocation();
+        checkConnection();
+    }
+
+    private boolean checkConnection(){
+        if(Utility.isConnected(SearchAirport.this)){
+            return true;
+        }
+        Toast.makeText(getBaseContext(), "Internet not connected. Try again later.", Toast.LENGTH_LONG).show();
+        return false;
     }
 
     @Override
@@ -176,6 +185,9 @@ public class SearchAirport extends AppCompatActivity {
     }
 
     public void onSearch(View v){
+        if(!checkConnection())
+            return;
+
         edit_txt = (EditText) findViewById(R.id.input_search);
         String s = edit_txt.getText().toString().trim();
         if (s == null || s.length() == 0) {
@@ -285,6 +297,8 @@ public class SearchAirport extends AppCompatActivity {
 
         // Handle action bar actions click
         switch (item.getItemId()) {
+            case R.id.search_airport:
+                return true;
             case R.id.rate_app:
                 RatingDialogue ratingDialogue = new RatingDialogue(SearchAirport.this);
                 ratingDialogue.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -298,6 +312,7 @@ public class SearchAirport extends AppCompatActivity {
             case R.id.leader_board:
                 Intent intent = new Intent(SearchAirport.this, activity_leaderboard.class);
                 startActivity(intent);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

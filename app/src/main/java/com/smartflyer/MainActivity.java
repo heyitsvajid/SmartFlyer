@@ -88,11 +88,22 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(signInIntent, 101);
             }
         });
+        checkConnection();
+    }
+
+    private boolean checkConnection(){
+        if(Utility.isConnected(MainActivity.this)){
+            return true;
+        }
+        Toast.makeText(getBaseContext(), "Internet not connected. Try again later.", Toast.LENGTH_LONG).show();
+        return false;
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        if(!checkConnection())
+            return;
         //check user login state
         HashMap<String,String> user = sqLiteHandler.getLoggedInUser();
 
@@ -143,6 +154,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void login() {
+        if(!checkConnection())
+            return;
+
         Log.d(TAG, "Login");
 
         if (!validate()) {
@@ -180,10 +194,10 @@ public class MainActivity extends AppCompatActivity {
                                     @Override
                                     public void onResponse(JSONObject response) {
                                         try {
-                                            Log.w(TAG, "airport/addUserWaitTime Response: " + response);
+                                            Log.w(TAG, "user/login Response: " + response);
                                             onLoginSuccess(response.getString("name"),response.getString("email"));
                                         } catch (JSONException e) {
-                                            Log.w(TAG, "airport/addUserWaitTime JSONException: " + e.getMessage());
+                                            Log.w(TAG, "user/login JSONException: " + e.getMessage());
                                             onLoginFailed();
                                             e.printStackTrace();
                                         }
@@ -192,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onErrorResponse(VolleyError error) {
                                 onLoginFailed();
-                                Log.w(TAG, "airport/addUserWaitTime Error: " + error.getMessage());
+                                Log.w(TAG, "user/login Error: " + error.getMessage());
                             }
                         });
                         queue.add(jsObjRequest);
@@ -236,6 +250,4 @@ public class MainActivity extends AppCompatActivity {
 
         return valid;
     }
-
-
 }

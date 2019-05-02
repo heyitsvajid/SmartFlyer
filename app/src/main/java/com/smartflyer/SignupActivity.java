@@ -18,6 +18,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.common.SignInButton;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -60,10 +61,20 @@ public class SignupActivity extends AppCompatActivity {
                 finish();
             }
         });
+        checkConnection();
+    }
+
+    private boolean checkConnection(){
+        if(Utility.isConnected(SignupActivity.this)){
+            return true;
+        }
+        Toast.makeText(getBaseContext(), "Internet not connected. Try again later.", Toast.LENGTH_LONG).show();
+        return false;
     }
 
     public void signup() {
-        Log.d(TAG, "Signup");
+        if(!checkConnection())
+            return;
 
         if (!validate()) {
             onSignupFailed();
@@ -119,7 +130,7 @@ public class SignupActivity extends AppCompatActivity {
                         queue.add(jsObjRequest);
                         progressDialog.dismiss();
                     }
-                }, 3000);
+                }, 3);
     }
 
     public void onSignupSuccess() {
