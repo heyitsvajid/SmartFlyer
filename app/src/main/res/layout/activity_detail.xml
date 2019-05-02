@@ -187,7 +187,7 @@
             android:layout_width="fill_parent"
             android:layout_height="400dp"
             android:layout_below="@id/graphTitle"
-
+            android:background="@drawable/app_logo"
             />
 
 
