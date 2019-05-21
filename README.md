@@ -13,3 +13,10 @@
 
 ## Why SmartFlyer?
   There are currently applications in the market that suggest users how soon they should depart for the airport. All these apps have drawbacks or loopholes which we have  tried to fix in SmartFlyer. SmartFlyer doesn’t solely rely on data from TSA but also takes user input in the form of the amount of  time they waited in checkpoint queues. This will help ensure that our algorithm gets fed latest data. As for future development, the feed wait time feature can be extended to provide user incentives. Also, once user has cleared through check-in, security and immigration they might have time to grab a  quick bite or to do some last minute shopping. In that case, the application will show the user a map of airport terminal marked with restaurants, cafes et al, to spend time at.
+
+
+| Application   | Screenshots |
+| ------------- | ------------- |
+| <img src="https://github.com/heyitsvajid/SmartFlyer/blob/master/Screenshots/Screenshot_20190424-212416.png" width="250"/>  | <img src="https://github.com/heyitsvajid/SmartFlyer/blob/master/Screenshots/Screenshot_20190424-212434.png" width="250"/> |
+| <img src="https://github.com/heyitsvajid/SmartFlyer/blob/master/Screenshots/Screenshot_20190424-212518.png" width="250"/>  | <img src="https://github.com/heyitsvajid/SmartFlyer/blob/master/Screenshots/Screenshot_20190424-212529.png" width="250"/>  |  
+| <img src="https://github.com/heyitsvajid/SmartFlyer/blob/master/Screenshots/Screenshot_20190424-212616.png" width="250"/>  | <img src="https://github.com/heyitsvajid/SmartFlyer/blob/master/Screenshots/Screenshot_20190424-212623.png" width="250"/>  |
